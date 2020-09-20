@@ -25,7 +25,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <sched.h>
 #include <errno.h>
 
 #define MAX 1024
@@ -38,7 +37,7 @@ void *productor_hilo(void *arg)
 {
   while(1) {
     if (disponibles == MAX) {
-      sched_yield();
+      pthread_yield();
     } else {
       buffer[disponibles++] = ALPHANUM[rand() % (sizeof(ALPHANUM)-1)];
     }
@@ -51,7 +50,7 @@ void *consumidor_hilo(void *arg)
 {
   while(1) {
     if (disponibles == 0) {
-      sched_yield();
+      pthread_yield();
     } else {
       printf("Caracter: %c\n", buffer[--disponibles]);
     }
